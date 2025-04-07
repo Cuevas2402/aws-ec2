@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<title>Mapa con Leaflet</title>
+		<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+
+		<style>
+			#map { height: 400px; margin-bottom: 20px; }
+			form { margin-bottom: 10px; }
+			label, input { margin: 5px; }
+		</style>
+
+	</head>
+
+	<body>
+
+		<b><h2 class="mb-5 mt-5 text-center">Actividad AWS</h2></b>
+
+
+		<div class="container mb-3">
+
+			<div id="map"></div>
+
+		</div>
+
+		<div class="d-flex flex-row mb-3 p-5">
+
+			<form id="viewForm" class="container mb-4">
+
+				<h3>Actualizar Vista</h3>
+
+				<div class="mb-3">
+					<label class="form-label">Latitud: </label>
+					<input class="form-control" type="number" step="any" id="viewLat" required>
+				</div>
+
+				<div class="mb-3">
+					<label class="form-label">Longitud: </label>
+					<input class="form-control"  type="number" step="any" id="viewLng" required>
+				</div>
+
+				<div class="mb-3">
+					<label class="form-label">Zoom: </label>
+					<input class="form-control" type="number" id="viewZoom" required>
+				</div>
+
+				<button type="submit" class="btn btn-primary">Submit</button>
+
+			</form>
+
+			<form id="markerForm" class="container">
+
+				<h3>Agregar Marcador</h3>
+
+				<div class="mb-3">
+					<label class="form-label">Latitud: </label>
+					<input class="form-control" type="number" step="any" id="markerLat" required>
+				</div>
+
+				<div class="mb-3">
+					<label class="form-label">Longitud: </label>
+					<input class="form-control" type="number" step="any" id="markerLng" required>
+				</div>
+
+				<button type="submit" class="btn btn-primary">Submit</button>
+
+			</form>
+
+		</div>
+
+		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+		<script>
+
+			const map = L.map('map').setView([25.66136, -100.41978], 13);
+
+			L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				attribution: '&copy; OpenStreetMap contributors'
+			}).addTo(map);
+
+			document.getElementById('viewForm').addEventListener('submit', (e) => {
+			e.preventDefault();
+			const lat = parseFloat(document.getElementById('viewLat').value);
+			const lng = parseFloat(document.getElementById('viewLng').value);
+			const zoom = parseInt(document.getElementById('viewZoom').value);
+			map.setView([lat, lng], zoom);
+			});
+
+			document.getElementById('markerForm').addEventListener('submit', (e) => {
+			e.preventDefault();
+			const lat = parseFloat(document.getElementById('markerLat').value);
+			const lng = parseFloat(document.getElementById('markerLng').value);
+			L.marker([lat, lng]).addTo(map)
+				.bindPopup(`${lat}, ${lng}`).openPopup();
+			});
+
+		</script>
+
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+		
+	</body>
+
+</html>
